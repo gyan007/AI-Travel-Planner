@@ -36,7 +36,7 @@ if submit:
 
             st.success("✅ Trip Successfully Planned!")
 
-            # 📍 Route Info
+            # Route Info
             st.subheader("🛣️ Route Information")
             route = data["route"]
             st.markdown(f"**From:** {source}  →  **To:** {destination}")
@@ -46,21 +46,21 @@ if submit:
             for step in route["steps"]:
                 st.markdown(f"- {step}")
 
-            # 📍 Coordinates
+            # Coordinates
             st.subheader("📍 Coordinates")
             st.json({
                 "source": data.get("source_coordinates"),
                 "destination": data.get("destination_coordinates")
             })
 
-            # 🌦️ Weather Forecast
+            #  Weather Forecast
             st.subheader("🌦️ Weather Forecast at Destination")
             for forecast in data["weather"]["forecast"]:
                 st.markdown(
                     f"{forecast['datetime']} | {forecast['description']} | 🌡️ {forecast['temperature']}°C | 💨 {forecast['wind_speed']} m/s"
                 )
 
-            # 🏞️ Attractions
+            # Attractions
             st.subheader("🏞️ Attractions / POIs")
             if data["places"]:
                 for p in data["places"]:
@@ -68,7 +68,7 @@ if submit:
             else:
                 st.info("No major attractions found.")
 
-            # 🏨 Recommendations
+            # Recommendations
             st.subheader("🏨 Recommendations")
             if data["recommendations"]:
                 for rec in data["recommendations"]:
@@ -76,7 +76,7 @@ if submit:
             else:
                 st.info("No specific recommendations found.")
 
-            # 💰 Budget Info
+            # Budget Info
             st.subheader("💰 Budget Estimate")
             budget_data = data["budget"]
             st.metric("Hotel", f"₹{budget_data['total_hotel']}")
@@ -87,7 +87,7 @@ if submit:
         except Exception as e:
             st.error(f"Error occurred: {e}")
 
-# 🧭 Optional: Use /route API directly
+# Optional: Use /route API directly
 st.markdown("---")
 st.subheader("🧭 Optional: Manually Check Route")
 
