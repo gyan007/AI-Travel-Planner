@@ -1,7 +1,7 @@
 import requests
 from typing import Dict
 
-API_KEY = "5b150b2d5e1885e93e04757d6efb0ec0"
+API_KEY = "Your_OpenWeatherMap_API_Key"
 BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
 def get_weather_forecast(lat: float, lon: float) -> Dict:
