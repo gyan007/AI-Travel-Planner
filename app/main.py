@@ -40,8 +40,8 @@ def plan_trip(request: TravelRequest):
 
         # Foursquare places
         foursquare_categories = []
-        # if "food" in request.preferences:
-        #     foursquare_categories.append("restaurants")
+        if "food" in request.preferences:
+            foursquare_categories.append("restaurants")
         if "hotel" in request.preferences:
             foursquare_categories.append("hotel")
 
