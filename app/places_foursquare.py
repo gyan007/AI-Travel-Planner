@@ -3,7 +3,7 @@
 import requests
 from typing import List
 
-FOURSQUARE_API_KEY = "IUZDX5TRT4LAEXX0C2BY3UT5FAF2UBTYG4IS5P3YDXGEL4NG"  # Replace this with your key
+FOURSQUARE_API_KEY = "Your_Foursquare_API_Key"  # Replace this with your key
 BASE_URL = "https://api.foursquare.com/v3/places/search"
 
 HEADERS = {
