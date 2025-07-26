@@ -25,7 +25,7 @@ def get_route(start_lat, start_lon, end_lat, end_lon, mode="car"):
         distance_km = round(route["distance"] / 1000, 2)
         duration_min = round(route["duration"] / 60, 2)
 
-        # Extracting step-by-step instructions
+
         steps = []
         for leg in route.get("legs", []):
             for step in leg.get("steps", []):
