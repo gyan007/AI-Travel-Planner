@@ -87,13 +87,6 @@ if submit:
             else:
                 st.info("No major attractions found.")
 
-
-            st.subheader("🏨 Recommendations")
-            if data["recommendations"]:
-                for rec in data["recommendations"]:
-                    st.markdown(f"**{rec['name']}** ({rec['category']})")
-            else:
-                st.info("No specific recommendations found.")
                 
 
             st.subheader("💰 Budget Estimate")
