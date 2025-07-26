@@ -36,7 +36,14 @@ def plan_trip(request: TravelRequest):
 
         # Get POIs & weather at destination
         pois = get_pois(dest_lat, dest_lon, request.preferences)
-        weather = get_weather_forecast(dest_lat, dest_lon)
+        
+        # weather = get_weather_forecast(dest_lat, dest_lon)
+        try:
+            weather = get_weather_forecast(dest_lat, dest_lon)
+        except Exception as e:
+            print(f"[weather] Error: {e}")
+            weather = {"forecast": [], "city": request.destination, "country": ""}
+
 
         # Foursquare places
         foursquare_categories = []
