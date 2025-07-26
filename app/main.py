@@ -49,6 +49,7 @@ def plan_trip(request: TravelRequest):
         hotel_data = [p for p in places if p["category"] == "hotel"]
 
         # Route
+        # inside plan_trip function
         route_result = get_route(
             start_lat=source_lat,
             start_lon=source_lon,
@@ -56,6 +57,15 @@ def plan_trip(request: TravelRequest):
             end_lon=dest_lon,
             mode=request.transport_mode or "car"
         )
+
+        if "error" in route_result:
+            # fallback dummy data to avoid crashing
+            route_result = {
+                "distance_km": 10 * calculate_days(request.start_date, request.end_date),
+                "duration_min": 60,
+                "steps": ["Route unavailable. Please use manual check below."]
+            }
+
 
         days = calculate_days(request.start_date, request.end_date)
         if "error" in route_result:
