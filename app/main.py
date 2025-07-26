@@ -38,11 +38,15 @@ def plan_trip(request: TravelRequest):
             print(f"[weather] Error: {e}")
             weather = {"forecast": [], "city": request.destination, "country": ""}
 
+        
         foursquare_categories = []
-        if "food" in request.preferences or not request.preferences:
-            foursquare_categories.append("restaurants")
-        if "hotel" in request.preferences or not request.preferences:
-            foursquare_categories.append("hotel")
+        # Match based on preferences OR always provide fallback
+        if any(pref in request.preferences for pref in ["nature", "attraction", "museum"]):
+            foursquare_categories.extend(["restaurants", "hotels"])  
+        # fallback if none
+        if not foursquare_categories:
+            foursquare_categories = ["restaurants", "hotels"]
+
 
 
         places = search_foursquare_businesses(dest_lat, dest_lon, foursquare_categories)
