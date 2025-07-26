@@ -56,14 +56,13 @@ if submit:
 
 
 
-            # Coordinates
             st.subheader("📍 Coordinates")
             st.json({
                 "source": data.get("source_coordinates"),
                 "destination": data.get("destination_coordinates")
             })
 
-            # 🌦️ Weather Forecast at Destination
+
             st.subheader("🌦️ Weather Forecast at Destination")
             weather_data = data.get("weather", {})
             forecast_list = weather_data.get("forecast", [])
@@ -80,7 +79,7 @@ if submit:
                     st.caption(f"Reason: {weather_data['error']}")
 
 
-            # Attractions
+
             st.subheader("🏞️ Attractions / POIs")
             if data["places"]:
                 for p in data["places"]:
@@ -88,15 +87,8 @@ if submit:
             else:
                 st.info("No major attractions found.")
 
-            # Recommendations
-            st.subheader("🏨 Recommendations")
-            if data["recommendations"]:
-                for rec in data["recommendations"]:
-                    st.markdown(f"**{rec['name']}** ({rec['category']})")
-            else:
-                st.info("No specific recommendations found.")
 
-            # Budget Info
+
             st.subheader("💰 Budget Estimate")
             budget_data = data["budget"]
             st.metric("Hotel", f"₹{budget_data['total_hotel']}")
@@ -107,7 +99,7 @@ if submit:
         except Exception as e:
             st.error(f"Error occurred: {e}")
 
-# Optional: Use /route API directly
+
 st.markdown("---")
 st.subheader("🧭 Optional: Manually Check Route")
 
