@@ -1,3 +1,5 @@
+# ✅ main.py (updated with safer weather & route handling)
+
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
 from typing import List, Optional
@@ -9,7 +11,6 @@ from app.places_foursquare import search_foursquare_businesses
 
 app = FastAPI(title="AI Travel Planner", version="1.0.0")
 
-
 class TravelRequest(BaseModel):
     source: str
     destination: str
@@ -19,12 +20,9 @@ class TravelRequest(BaseModel):
     budget: Optional[float] = None
     transport_mode: Optional[str] = "car"
 
-
-
 @app.post("/plan")
 def plan_trip(request: TravelRequest):
     try:
-        # Get coordinates
         source_coords = get_coordinates(request.source)
         dest_coords = get_coordinates(request.destination)
 
@@ -34,18 +32,14 @@ def plan_trip(request: TravelRequest):
         source_lat, source_lon = source_coords
         dest_lat, dest_lon = dest_coords
 
-        # Get POIs & weather at destination
         pois = get_pois(dest_lat, dest_lon, request.preferences)
-        
-        # weather = get_weather_forecast(dest_lat, dest_lon)
+
         try:
             weather = get_weather_forecast(dest_lat, dest_lon)
         except Exception as e:
             print(f"[weather] Error: {e}")
             weather = {"forecast": [], "city": request.destination, "country": ""}
 
-
-        # Foursquare places
         foursquare_categories = []
         if "food" in request.preferences:
             foursquare_categories.append("restaurants")
@@ -55,8 +49,6 @@ def plan_trip(request: TravelRequest):
         places = search_foursquare_businesses(dest_lat, dest_lon, foursquare_categories)
         hotel_data = [p for p in places if p["category"] == "hotel"]
 
-        # Route
-        # Fetch route
         route_result = get_route(
             start_lat=source_lat,
             start_lon=source_lon,
@@ -64,20 +56,18 @@ def plan_trip(request: TravelRequest):
             end_lon=dest_lon,
             mode=request.transport_mode or "car"
         )
-        
-        days = calculate_days(request.start_date, request.end_date)
-        
-        # Handle route fetch failure gracefully
-        if "error" in route_result:
-            route_result = {
-                "distance_km": 10 * days,
-                "duration_min": 60 * days,
-                "steps": ["Route unavailable. Please check manually using the below option."]
-            }
-        else:
-            total_distance = max(route_result["distance_km"], 10 * days)
 
-        # Budget estimate
+        if "error" in route_result:
+            print(f"[route] Error: {route_result['error']}")
+            route_result = {
+                "distance_km": None,
+                "duration_min": None,
+                "steps": []
+            }
+
+        days = calculate_days(request.start_date, request.end_date)
+        total_distance = route_result["distance_km"] or (10 * days)
+
         budget = estimate_budget(days, hotel_data, travel_distance_km=total_distance)
 
         return {
@@ -94,8 +84,6 @@ def plan_trip(request: TravelRequest):
 
     except Exception as e:
         return {"error": str(e)}
-
-
 
 @app.get("/route")
 def plan_route(
