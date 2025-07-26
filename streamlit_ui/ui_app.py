@@ -38,13 +38,17 @@ if submit:
 
             # Route Info
             st.subheader("🛣️ Route Information")
-            route = data["route"]
-            st.markdown(f"**From:** {source}  →  **To:** {destination}")
-            st.markdown(f"**Distance:** {route['distance_km']} km")
-            st.markdown(f"**Duration:** {route['duration_min']} minutes")
-            st.markdown("**Steps:**")
-            for step in route["steps"]:
-                st.markdown(f"- {step}")
+            route = data.get("route", {})
+            if "steps" in route and route["steps"] == ["Route unavailable. Please check manually using the below option."]:
+                st.warning("⚠️ Could not fetch the detailed route. Please scroll down to use the manual route checker.")
+            else:
+                st.markdown(f"**From:** {source}  →  **To:** {destination}")
+                st.markdown(f"**Distance:** {route['distance_km']} km")
+                st.markdown(f"**Duration:** {route['duration_min']} minutes")
+                st.markdown("**Steps:**")
+                for step in route["steps"]:
+                    st.markdown(f"- {step}")
+
 
             # Coordinates
             st.subheader("📍 Coordinates")
