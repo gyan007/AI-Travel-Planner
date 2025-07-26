@@ -63,12 +63,22 @@ if submit:
                 "destination": data.get("destination_coordinates")
             })
 
-            #  Weather Forecast
+            # 🌦️ Weather Forecast at Destination
             st.subheader("🌦️ Weather Forecast at Destination")
-            for forecast in data["weather"]["forecast"]:
-                st.markdown(
-                    f"{forecast['datetime']} | {forecast['description']} | 🌡️ {forecast['temperature']}°C | 💨 {forecast['wind_speed']} m/s"
-                )
+            weather_data = data.get("weather", {})
+            forecast_list = weather_data.get("forecast", [])
+            
+            if forecast_list:
+                for forecast in forecast_list:
+                    st.markdown(
+                        f"{forecast['datetime']} | {forecast['description']} | "
+                        f"🌡️ {forecast['temperature']}°C | 💨 {forecast['wind_speed']} m/s"
+                    )
+            else:
+                st.info("Weather data is not available right now.")
+                if "error" in weather_data:
+                    st.caption(f"Reason: {weather_data['error']}")
+
 
             # Attractions
             st.subheader("🏞️ Attractions / POIs")
