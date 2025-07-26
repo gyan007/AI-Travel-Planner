@@ -36,18 +36,24 @@ if submit:
 
             st.success("✅ Trip Successfully Planned!")
 
-            # Route Info
+            
             st.subheader("🛣️ Route Information")
             route = data.get("route", {})
-            if "steps" in route and route["steps"] == ["Route unavailable. Please check manually using the below option."]:
-                st.warning("⚠️ Could not fetch the detailed route. Please scroll down to use the manual route checker.")
-            else:
-                st.markdown(f"**From:** {source}  →  **To:** {destination}")
-                st.markdown(f"**Distance:** {route['distance_km']} km")
-                st.markdown(f"**Duration:** {route['duration_min']} minutes")
+            
+            distance = route.get("distance_km")
+            duration = route.get("duration_min")
+            steps = route.get("steps")
+            
+            if distance is not None and duration is not None and steps:
+                st.markdown(f"**From:** {source} → **To:** {destination}")
+                st.markdown(f"**Distance:** {distance} km")
+                st.markdown(f"**Duration:** {duration} minutes")
                 st.markdown("**Steps:**")
-                for step in route["steps"]:
+                for step in steps:
                     st.markdown(f"- {step}")
+            else:
+                st.warning("⚠️ Could not fetch route information. Please try manually below.")
+
 
 
             # Coordinates
