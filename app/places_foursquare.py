@@ -1,9 +1,7 @@
-# app/places_yelp.py (renamed to places_foursquare.py)
-
 import requests
 from typing import List
 
-FOURSQUARE_API_KEY = "Your_Foursquare_API_Key"  # Replace this with your key
+FOURSQUARE_API_KEY = "Your_Foursquare_API_Key"  
 BASE_URL = "https://api.foursquare.com/v3/places/search"
 
 HEADERS = {
@@ -12,8 +10,8 @@ HEADERS = {
 }
 
 CATEGORY_MAP = {
-    "hotels": "19014",        # Lodging
-    "restaurants": "13065",   # Restaurant
+    "hotels": "19014",        
+    "restaurants": "13065", 
 }
 
 def search_foursquare_businesses(lat: float, lon: float, categories: List[str], limit=5):
@@ -40,8 +38,8 @@ def search_foursquare_businesses(lat: float, lon: float, categories: List[str], 
             results.append({
                 "name": place.get("name"),
                 "category": category,
-                "rating": "N/A",  # Not provided by Foursquare free tier
-                "price": "₹₹",    # Assume mid-tier for now
+                "rating": "N/A", 
+                "price": "₹₹",   
                 "address": ", ".join(place["location"].get("formatted_address", [])),
                 "phone": place.get("tel", ""),
                 "url": f"https://foursquare.com/v/{place['fsq_id']}"
