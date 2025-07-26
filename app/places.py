@@ -10,15 +10,20 @@ HEADERS = {
 
 def get_coordinates(location: str):
     params = {"q": location, "format": "json"}
-    response = requests.get(NOMINATIM_URL, params=params, headers=HEADERS)
-    response.raise_for_status()
-    data = response.json()
-    if not data:
+    try:
+        response = requests.get(NOMINATIM_URL, params=params, headers=HEADERS, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        if not data:
+            print(f"[get_coordinates] No results found for location: {location}")
+            return None
+        lat = float(data[0]["lat"])
+        lon = float(data[0]["lon"])
+        return lat, lon
+    except Exception as e:
+        print(f"[get_coordinates] Error getting coordinates for {location}: {e}")
         return None
-    return float(data[0]["lat"]), float(data[0]["lon"])
 
-
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 
 def get_pois(lat: float, lon: float, keywords: List[str]):
     search_tags = keywords or ["viewpoint", "museum", "attraction", "park", "monument"]
