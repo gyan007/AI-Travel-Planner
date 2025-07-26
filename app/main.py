@@ -39,6 +39,13 @@ def plan_trip(request: TravelRequest):
             weather = {"forecast": [], "city": request.destination, "country": ""}
 
 
+        foursquare_categories = []
+        if "food" in request.preferences:
+            foursquare_categories.append("restaurants")
+        if "hotel" in request.preferences:
+            foursquare_categories.append("hotel")
+
+        
         places = search_foursquare_businesses(dest_lat, dest_lon, foursquare_categories)
         hotel_data = [p for p in places if p["category"] == "hotel"]
 
