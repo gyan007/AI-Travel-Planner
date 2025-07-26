@@ -2,7 +2,7 @@ import requests
 from typing import Dict
 
 API_KEY = "Your_OpenWeatherMap_API_Key"
-BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
+BASE_URL1 = "https://api.openweathermap.org/data/2.5/forecast"
 
 def get_weather_forecast(lat: float, lon: float) -> Dict:
     params = {
@@ -11,7 +11,7 @@ def get_weather_forecast(lat: float, lon: float) -> Dict:
         "appid": API_KEY,
         "units": "metric"
     }
-    response = requests.get(BASE_URL, params=params)
+    response = requests.get(BASE_URL1, params=params)
     response.raise_for_status()
     data = response.json()
     forecast = []
