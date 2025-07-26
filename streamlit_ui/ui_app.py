@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import datetime
 
-BACKEND_URL = "http://127.0.0.1:8000"
+BACKEND_URL = "https://ai-travel-planner-85vp.onrender.com/"
 
 st.set_page_config(page_title="🧳 AI Travel Planner", layout="wide")
 st.title("🗺️ AI Travel Planner")
